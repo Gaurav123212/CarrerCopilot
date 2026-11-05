@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -40,4 +42,25 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<Education> educations = new ArrayList<>(); // Ye line ka matlab hai is mapping ko use karke
+                                                            // hame kya output milega
+
+    @OneToMany(mappedBy = "user")
+    private List<UserSkill> skills = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Experience> experiences = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user")
+    private careerPreference careerPreference;
+
+    @OneToMany(mappedBy = "careerPreference")
+    private List<preferredRole> preferredRoles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "careerPreference")
+    private List<preferredLocation> preferredLocations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<resume> resumes = new ArrayList<>();
 }

@@ -5,8 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,8 +28,9 @@ public class Experience {
     private String experienceType;
     private String organizationName;
     private String description;
-    private String technologies;
-    private LocalDate startDate;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "json")
+    private List<String> technologies = new ArrayList<>();    private LocalDate startDate;
     private LocalDate endDate;
     private boolean isCurrent;
     private String location;

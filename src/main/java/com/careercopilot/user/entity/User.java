@@ -55,11 +55,6 @@ public class User {
     @OneToOne(mappedBy = "user")
     private careerPreference careerPreference;
 
-    @OneToMany(mappedBy = "careerPreference")
-    private List<preferredRole> preferredRoles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "careerPreference")
-    private List<preferredLocation> preferredLocations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<resume> resumes = new ArrayList<>();

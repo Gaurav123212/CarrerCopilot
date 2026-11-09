@@ -34,6 +34,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'me.paulschwarz:springboot4-dotenv:5.1.0'
 
 	// 7. Testing Framework
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

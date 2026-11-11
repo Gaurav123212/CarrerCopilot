@@ -1,5 +1,6 @@
 package com.careercopilot.resume_service.service.impl;
 
+import com.careercopilot.resume_service.client.UserClient;
 import com.careercopilot.resume_service.dto.ResumeResponseDto;
 import com.careercopilot.resume_service.entity.Resume;
 import com.careercopilot.resume_service.exceptions.ResourceNotFoundException;
@@ -31,6 +32,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     private final ResumeRepository resumeRepository;
     private final ResumeMapper resumeMapper;
+    private final UserClient userClient;
 
     @Value("${file.upload-dir:uploads/resumes}")
     private String uploadDir;
@@ -43,6 +45,16 @@ public class ResumeServiceImpl implements ResumeService {
         }
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File must not be empty");
+        }
+
+        try {
+            userClient.getUserById(userId);
+        } catch (feign.FeignException.NotFound e) {
+            log.error("Failed to upload resume. User not found in user-service with ID: {}", userId);
+            throw new IllegalArgumentException("User not found with ID: " + userId);
+        } catch (feign.FeignException e) {
+            log.error("Unable to verify user with user-service. Error: {}", e.getMessage());
+            throw new RuntimeException("User verification failed due to downstream service issue");
         }
 
         try {
@@ -96,6 +108,12 @@ public class ResumeServiceImpl implements ResumeService {
     public List<ResumeResponseDto> getResumesByUserId(Long userId) {
         if (userId == null) {
             throw new IllegalArgumentException("User ID must not be null");
+        }
+        try {
+            userClient.getUserById(userId);
+        } catch (feign.FeignException.NotFound e) {
+            log.error("Failed to fetch resumes. User not found with ID: {}", userId);
+            throw new IllegalArgumentException("User not found with ID: " + userId);
         }
         List<Resume> resumes = resumeRepository.findByUserId(userId);
         return resumeMapper.toResponseDtoList(resumes);

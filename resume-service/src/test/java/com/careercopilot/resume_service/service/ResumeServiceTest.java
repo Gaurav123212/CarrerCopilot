@@ -39,6 +39,9 @@ class ResumeServiceTest {
     @Mock
     private ResumeRepository resumeRepository;
 
+    @Mock
+    private com.careercopilot.resume_service.client.UserClient userClient;
+
     @Spy
     private ResumeMapper resumeMapper = new ResumeMapper();
 
@@ -91,6 +94,7 @@ class ResumeServiceTest {
                 .parsedContent("Java Developer Resume")
                 .build();
 
+        when(userClient.getUserById(100L)).thenReturn(new Object());
         when(resumeRepository.save(any(Resume.class))).thenReturn(savedResume);
 
         ResumeResponseDto result = resumeService.uploadResume(100L, file);
@@ -121,6 +125,7 @@ class ResumeServiceTest {
     @Test
     @DisplayName("Should get resumes by userId")
     void testGetResumesByUserId() {
+        when(userClient.getUserById(100L)).thenReturn(new Object());
         Resume resume = Resume.builder().id(1L).userId(100L).fileName("r.pdf").build();
         when(resumeRepository.findByUserId(100L)).thenReturn(List.of(resume));
 

@@ -1,9 +1,13 @@
 package com.careercopilot.jobservice;
 
+import com.careercopilot.jobservice.remotiveResponse.RemotiveResponse;
+import com.careercopilot.jobservice.service.RemotiveService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.File;
